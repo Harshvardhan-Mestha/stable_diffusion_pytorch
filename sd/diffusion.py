@@ -80,7 +80,7 @@ class UNET_AttentionBlock(nn.Module):
 
         n,c,h,w = x.shape
 
-        x = x.view(n,c,h*w) #(bsize,ch,h,w) -> (bsize,ch,h*w)
+        x = x.view((n,c,h*w)) #(bsize,ch,h,w) -> (bsize,ch,h*w)
         x = x.transpose(-1,-2) #(bsize,ch,h*w) -> (bsize,h*w,ch)
 
         #norm + self attention + skip connection

@@ -15,11 +15,11 @@ class VAE_AttentionBlock(nn.Module):
         x = self.groupnorm(x)
         n,c,h,w = x.shape
 
-        x = x.view(n,c,h*w) #(n,c,h*w)
+        x = x.view((n,c,h*w)) #(n,c,h*w)
         x = x.transpose(-1,-2) #(n,h*w,c)
         x = self.attention(x,causal_mask=False)
         x = x.transpose(-1,-2) #(n,c,h*w)
-        x = x.view(n,c,h,w)
+        x = x.view((n,c,h,w))
         x += residue
 
         return x
