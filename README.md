@@ -14,6 +14,16 @@ Then run the cells in sd/demo.ipynb
 
 I added the ability to animate the generation process, to use this please pass anim=True to the model.
 
+
+<img src="demos/car.gif" alt="drawing" width="200" height="200"/>
+<img src="demos/cherry_blossom.gif" alt="drawing" width="200" height="200"/>
+<img src="demos/castle.gif" alt="drawing" width="200" height="200"/>
+<img src="demos/pizza.gif" alt="drawing" width="200" height="200"/>
+<img src="demos/koi.gif" alt="drawing" width="200" height="200"/>
+<img src="demos/phoenix.gif" width="200" height="200"/>
+<img src="demos/plane.gif"  width="200" height="200"/>
+<img src="demos/iss.gif"  width="200" height="200"/>
+
 #### Credits
 - https://github.com/hkproj/pytorch-stable-diffusion/tree/main
 - https://github.com/divamgupta/stable-diffusion-tensorflow
