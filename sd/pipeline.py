@@ -16,7 +16,8 @@ def generate(prompt:str,
              seed=None,
              device=None,
              idle_device=None,
-             tokenizer=None
+             tokenizer=None,
+             anim=False
              ):
 
     with torch.no_grad():
@@ -87,8 +88,9 @@ def generate(prompt:str,
         diffusion = models["diffusion"]
         diffusion.to(device)
 
+        latent_arr = []
         timesteps = tqdm(sampler.timesteps)
-        for i,timestep in enumerate(timesteps): 
+        for i,timestep in enumerate(timesteps):
             time_embedding = get_time_embedding(timestep).to(device) #(1,320)
             model_input = latents #(bsize,4,latents_h,latents_w), (latents_h same as l_h)
 
@@ -102,19 +104,33 @@ def generate(prompt:str,
                 model_output = cfg_scale*(output_cond-output_uncond) + output_uncond
             
             latents = sampler.step(timestep,latents,model_output) #remove noise pred by UNET
+            latent_arr.append(latents)
+            
 
         #to_idle(diffusion)
 
         decoder = models["decoder"]
         decoder.to(device)
 
-        images = decoder(latents)
+        img_arr = []
         #to_idle(decoder)
+        if(anim):
+            for i in range(len(latent_arr)):
+                img = decoder(latent_arr[i])
+                img = rescale(img,(-1,1),(0,255),clamp=True)
+                img = img.permute(0,2,3,1)
+                img = img.to("cpu",torch.uint8).numpy()
+                img_arr.append(img)
+        else:
+            images = decoder(latents)
+            images = rescale(images,(-1,1),(0,255),clamp=True)
+            images = images.permute(0,2,3,1) #(bs,ch,h,w) -> (bs,h,w,ch)
+            images = images.to("cpu",torch.uint8).numpy()
+            img_arr.append(images)
 
-        images = rescale(images,(-1,1),(0,255),clamp=True)
-        images = images.permute(0,2,3,1) #(bs,ch,h,w) -> (bs,h,w,ch)
-        images = images.to("cpu",torch.uint8).numpy()
-        return images[0]
+        #return images[0]
+        print(seed)
+        return img_arr
     
 def rescale(x,old_range,new_range,clamp=False):
     old_min, old_max = old_range

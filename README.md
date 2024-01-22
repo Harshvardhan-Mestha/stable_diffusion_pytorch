@@ -10,6 +10,10 @@ Run the following:
 
 Then run the cells in sd/demo.ipynb
 
+#### Animation
+
+I added the ability to animate the generation process, to use this please pass anim=True to the model.
+
 #### Credits
 - https://github.com/hkproj/pytorch-stable-diffusion/tree/main
 - https://github.com/divamgupta/stable-diffusion-tensorflow
